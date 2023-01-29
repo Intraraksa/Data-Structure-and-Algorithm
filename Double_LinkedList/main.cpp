@@ -106,12 +106,58 @@ class DoublyLinkedList{
       return temp;
     }
   }
+// function to set value in index
+  bool set(int index, int value){
+    Node* temp = get(index);
+    if (temp){
+      temp->value = value;
+      return true;
+    }
+    return false;
+  }
+// function insert value
+  bool insert(int index, int value){
+  if (index < 0 || index > length) return false;
+  if (index == 0){
+    prepend(value);
+   }else if (index == length){
+    append(value);
+    }else{
+    Node* newNode = new Node(value);
+    Node* before = get(index - 1);
+    Node* after = before->next;
+    newNode->prev = before;
+    newNode->next = after;
+    before->next = newNode;
+    after->prev = newNode;
+    length++;
+    }return true;
+  }
+// function to delete node
+  void deleteNode(int index){
+    if (index < 0 || index > length) return;
+    if (index == 0) return deleteFirst();
+    if (index == length) return deleteLast();
+    Node* temp = get(index);
+    Node* before = temp->prev;
+    Node* after = temp->next;
+    after->prev = temp->prev;
+    before->next = temp->next;
+    delete temp;
+    length--;
+  }
 };
 
 int main(){
   DoublyLinkedList* Dll = new DoublyLinkedList(4);
   // Dll->printLength();
   Dll->append(7);
+  Dll->append(9);
+  // Dll->printList();
+  // cout << "insert" <<endl;
+  Dll->insert(2,19);
   Dll->printList();
-  cout << Dll->get(1) << endl;
+  cout << "Delete Node" <<endl;
+  Dll->deleteNode(1);
+  Dll->printLength();
 }
