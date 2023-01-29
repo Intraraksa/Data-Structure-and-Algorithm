@@ -97,14 +97,63 @@ class LinkedList{
       }
   }
 // function to set value into particular index
-bool set(int value,int index){
-  Node* temp = get(index);
-  if (temp != nullptr){
-    temp->value = value;
-    return true;
+  bool set(int value,int index){
+    Node* temp = get(index);
+    if (temp != nullptr){
+      temp->value = value;
+      return true;
+    }
+    return false;
   }
-  return false;
-}
+  // function for insert value
+  bool insert(int value, int index){
+    if (index < 0 || index > length) return false;
+    if (index == 0){
+      prepend(0);
+      return true;
+    }
+    else if (index == length){
+      append(value);
+      return true;
+    }
+    else{
+      Node* newNode = new Node(value);
+      Node* temp = get(index - 1);
+      newNode->next = temp->next;
+      temp->next = newNode;
+      length++;
+      return true;
+    }
+  }
+// function for delete Node
+  void deleteNode(int index){
+    if (index == 0) return deleteFirst();
+    if (index == length - 1) return deleteLast();
+    Node* prev = get(index - 1);
+    Node* temp = prev->next;
+    prev->next = temp->next;
+    delete temp;
+    length--;
+  }
+// function to reverse
+  void reverse(){
+    //1
+    Node* temp = head;
+    //2
+    head = tail;
+    //3
+    tail = temp;
+    // create node after,before
+    Node* after = temp->next;
+    Node* before = nullptr;
+
+    for (int i=0; i < length; i++){
+      after = temp->next;
+      temp->next = before;
+      before = temp;
+      temp = after;
+    }
+  }
 };
 
 // Main function
@@ -115,6 +164,8 @@ int main(){
   linkedlist->append(12);
   linkedlist->append(13);
   linkedlist->printList();
-  linkedlist->set(16,3);
+  cout << "reverse" << endl;
+  linkedlist->reverse();
   linkedlist->printList();
+  
 }
